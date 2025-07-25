@@ -9,9 +9,9 @@ def get_listener():
         raise RuntimeError("ConnectionListener is not initialized. Call start_server() first.")
     return _listener
 
-def start_server():
+def start_server(server_config):
     global _listener
-    _listener = ConnectionListener()
+    _listener = ConnectionListener(server_config)
     # サーバーソケットを開く
     _listener.start_server()
 

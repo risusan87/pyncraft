@@ -10,11 +10,12 @@ from networking.enums import JEPacketConnectionState
 from networking.mcrypto import gen_rsa_key_pair, encode_public_key_der
 
 class ConnectionListener:
-    def __init__(self):
+    def __init__(self, server_config):
         # サーバー停止イベントとスレッド管理用の変数
         self._server_stop_event = threading.Event()
         self._server_thread = None
         self._server = None
+        self._server_config = server_config
 
         # ConnectionProcessorのインスタンスを保持
         self._connection_processor = None
@@ -47,9 +48,9 @@ class ConnectionListener:
 
     def start_server(self):
         logger.info('Starting server...')
-        address = '0.0.0.0'
-        port = 25565
-        
+        address = self._server_config.get('pyncraft', 'server_ip')
+        port = int(self._server_config.get('pyncraft', 'server_port'))
+
         # ConnectionProcessorのインスタンスを作成
         self._connection_processor = ConnectionProcessor()
         self._connection_processor.start_processor()
@@ -242,6 +243,11 @@ class JEConnectionState:
         self._state_lock = threading.Lock()
         self._state = JEPacketConnectionState.HANDSHAKING # 接続状態を管理するための変数
         self.compression_threshold = -1 # 圧縮プロトコルのしきい値 (-1は圧縮なし)
+
+        # サーバーコンフィグ
+        self.motd = listener._server_config.get('pyncraft', 'motd')
+        self.max_players = int(listener._server_config.get('pyncraft', 'max_players'))
+        self.online_players = 0
 
         # クライアント情報パケット
         self.config_lock = threading.Lock()

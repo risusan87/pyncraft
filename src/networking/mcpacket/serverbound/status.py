@@ -16,15 +16,15 @@ class SStatusRequest(ServerboundPacket):
         # 将来的にはcon_stateからサーバーの状態を取得する
         mc_version = 'Pythonでマイクラサーバー書き直してみるよ' # protocol versionがマッチしない場合に表示
         protocol_version = 772 # クライアントのバージョンと照合するのに使用
-        max_players = 99999 # 最大同時接続可能人数
-        online_players = 9999 # 現在オンラインの人数
+        max_players = con_state.max_players # 最大同時接続可能人数
+        online_players = con_state.online_players # 現在オンラインの人数
         # オンライン人数にホバーした時に表示するオンラインプレイヤー情報
         sample_players = [
             {'name':'ダミープレイヤー１','id':'2de4870c-deb6-42b2-8f34-36f9d2496142'},
             {'name':'ダミープレイヤー２','id':'2de4870c-deb6-42b2-8f34-36f9d2496142'},
              {'name':'ダミープレイヤー３','id':'2de4870c-deb6-42b2-8f34-36f9d2496142'}
         ] 
-        description = 'Pythonでマイクラサーバー書き直してみるよ' # サーバー情報文字列
+        description = con_state.motd
 
         return status.CStatusResponse(mc_version, protocol_version, max_players, online_players, sample_players, description)
 
