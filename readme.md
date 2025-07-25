@@ -16,7 +16,7 @@ It is best suggested to use with virtual environment. Following is an example wi
 ```
 $ python -m venv .venv && source .venv/bin/activate
 ```
-To build pyncraft in editable mode, run:
+To build pyncraft, run:
 ```
 $ python install -e .
 ```
