@@ -14,10 +14,19 @@ class Logger(logging.Logger):
 
         # コンソール出力用のハンドラを作成
         console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
+        console_handler.setLevel(logging.INFO)
 
         # ファイル出力用のハンドラを作成
-        file_handler = logging.FileHandler('resources/logs/app.log')
+        log_path = 'resources/logs/'
+        log_name = 'log'
+        full_path = log_path + log_name + '.log'
+        if os.path.exists(full_path):
+            logger_count = 1
+            full_path = log_path + log_name + f'{logger_count}.log'
+            while os.path.exists(full_path):
+                full_path = log_path + log_name + f'{logger_count}.log'
+                logger_count += 1
+        file_handler = logging.FileHandler(full_path, mode='w')
         file_handler.setLevel(logging.DEBUG)
 
         # ログのフォーマットを定義
