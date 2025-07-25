@@ -1,8 +1,8 @@
 # 🧱 Project Pyncraft 🧱
-![Top Lang](https://img.shields.io/github/languages/top/risusan87/mcpyserver)
-![Repo Size](https://img.shields.io/github/repo-size/risusan87/mcpyserver)
-![Commit Activity](https://img.shields.io/github/commit-activity/m/risusan87/mcpyserver)
-![Last Commit](https://img.shields.io/github/last-commit/risusan87/mcpyserver)
+![Top Lang](https://img.shields.io/github/languages/top/risusan87/pyncraft)
+![Repo Size](https://img.shields.io/github/repo-size/risusan87/pyncraft)
+![Commit Activity](https://img.shields.io/github/commit-activity/m/risusan87/pyncraft)
+![Last Commit](https://img.shields.io/github/last-commit/risusan87/pyncraft)
 
 Pyncraft is a work-in-progress reimplementation of the official Minecraft Java Edition server ("Notchian server") written in Python.  
 Its primary purpose is to mimic the original server's behaviour while providing a more accessible and modifiable codebase for further modification such as plugins and data packs, or even lower level base modification!
@@ -16,7 +16,7 @@ It is best suggested to use with virtual environment. Following is an example wi
 ```
 $ python -m venv .venv && source .venv/bin/activate
 ```
-To build pyncraft, run:
+To build pyncraft in editable mode, run:
 ```
 $ python install -e .
 ```
