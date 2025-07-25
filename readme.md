@@ -18,7 +18,7 @@ $ python -m venv .venv && source .venv/bin/activate
 ```
 To build pyncraft in editable mode, run:
 ```
-$ python install -e .
+$ pip install -e .
 ```
 At this point, you may use `$ pyncraft` command to run the server.
 
