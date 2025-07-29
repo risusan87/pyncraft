@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 import threading
 
-from networking.enums import JEPacketConnectionState
+from networking.enum import JEPacketConnectionState
 
 jepacket_class_registry = {}
 

@@ -5,7 +5,7 @@ import nbtlib
 
 from networking.mcpacket import ClientboundPacket
 from networking.mcpacket.io import JEPacketBuffer
-from networking.enums import JEPacketConnectionState
+from networking.enum import JEPacketConnectionState
 
 class CDisconnect(ClientboundPacket):
     def __init__(self, reason: str):

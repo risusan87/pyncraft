@@ -1,6 +1,6 @@
 
 from networking.mcpacket import ServerboundPacket
-from networking.enums import JEPacketConnectionState
+from networking.enum import JEPacketConnectionState
 import networking.mcpacket.clientbound.status as status
 
 @ServerboundPacket.register_packet(JEPacketConnectionState.STATUS, 0x00)

@@ -6,7 +6,7 @@ import requests
 
 from core.logger import logger
 from networking.mcpacket import ServerboundPacket
-from networking.enums import JEPacketConnectionState
+from networking.enum import JEPacketConnectionState
 from networking.mcrypto import decrypt_rsa, gen_ciphers, auth_hash
 import networking.mcpacket.clientbound.login as login
 

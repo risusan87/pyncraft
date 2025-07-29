@@ -6,7 +6,7 @@ import configparser
 
 from core.logger import logger
 
-from networking.enums import JEPacketConnectionState
+from networking.enum import JEPacketConnectionState
 import networking.mcpacket.clientbound.configuration as configuration
 import networking.mcpacket.clientbound.play as play
 from networking.connection import Connection

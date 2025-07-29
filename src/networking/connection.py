@@ -6,7 +6,7 @@ import select
 
 from core.logger import logger
 from networking.mcpacket.io import JEPacketWrapper
-from networking.enums import JEPacketConnectionState
+from networking.enum import JEPacketConnectionState
 from networking.mcrypto import gen_rsa_key_pair, encode_public_key_der
 
 class ConnectionListener:
