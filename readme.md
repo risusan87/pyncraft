@@ -3,6 +3,7 @@
 ![Repo Size](https://img.shields.io/github/repo-size/risusan87/pyncraft)
 ![Commit Activity](https://img.shields.io/github/commit-activity/m/risusan87/pyncraft)
 ![Last Commit](https://img.shields.io/github/last-commit/risusan87/pyncraft)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Pyncraft is a work-in-progress reimplementation of the official Minecraft Java Edition server ("Notchian server") written in Python.  
 Its primary purpose is to mimic the original server's behaviour while providing a more accessible and modifiable codebase for further modification such as plugins and data packs, or even lower level base modification!
@@ -70,6 +71,9 @@ FD: b/d com/mojang/math/Constants/EPSILON
 MD: b/<init> ()V com/mojang/math/Constants/<init> ()V
 ```
 
+## License
+
+This project is licensed under the MIT License.
 
 
 
