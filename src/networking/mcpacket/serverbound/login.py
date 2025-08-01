@@ -98,7 +98,6 @@ class SLoginAcknowledged(ServerboundPacket):
         # S -> C: LoginSuccess 
         # C -> S: LoginAcknowledged (ログイン完了)
         # 接続をCONFIGに変更
-        logger.info(f'{con_state.username} logged in', False)
         con_state._switch_state(JEPacketConnectionState.CONFIGURATION)
         return None
     
