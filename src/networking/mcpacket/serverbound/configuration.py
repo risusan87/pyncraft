@@ -1,4 +1,5 @@
 
+from core.logger import logger
 from networking.mcpacket import ServerboundPacket
 from networking.enum import JEPacketConnectionState
 
@@ -72,3 +73,29 @@ class SFinishConfigurationAcknowledged(ServerboundPacket):
     @classmethod
     def from_bytes(cls, packet_buffer):
         return cls()
+
+@ServerboundPacket.register_packet(JEPacketConnectionState.CONFIGURATION, 0x07)
+class SKnownPacks(ServerboundPacket):
+    def __init__(self, packs: list[dict]):
+        self.packs = packs
+
+    @property
+    def packet_id(self):
+        return self._packet_id
+
+    def handle(self, con_state):
+        return None
+
+    @classmethod
+    def from_bytes(cls, packet_buffer):
+        pack_count = packet_buffer.read_varint()
+        packs = []
+        logger.debug(f'Received {pack_count} known packs from client')
+        for _ in range(pack_count):
+            pack = {}
+            pack['pack_name'] = packet_buffer.read_utf8_string()
+            pack['pack_id'] = packet_buffer.read_utf8_string()
+            pack['pack_version'] = packet_buffer.read_utf8_string()
+            packs.append(pack)
+        return cls(packs)
+    
