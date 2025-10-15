@@ -23,12 +23,12 @@ $ pip install -e .
 ```
 At this point, you may use `$ pyncraft` command to run the server.
 
-## 🚀 Project Goals 🚀
+## Objective
 
 Pyncraft is not only a full replacement for vanilla server. Its main goals are:
 - ✅ Make net.minecraft.server mechanics easier to explore and understand
 - ✅ Lowers barrier for modding in Python, possibly, other Java-based pre-built plugins adaption such as Spigot plugins.
-- ✅ Prototype world gen, mob AI, or any sort of world behavior (possibly with GPU accerelation)
+- ✅ Prototype world gen and mob AI
 
 ## 🤝 Contribution 🤝
 
