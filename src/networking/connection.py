@@ -121,7 +121,7 @@ class ConnectionProcessor:
                             if incoming_packet.__class__ in reply._repliable_packets:
                                 # 返信可能なパケットがあれば待機フラグを立てる
                                 if reply._timeout_flag.is_set():
-                                    logger.warning(f'Timeout waiting for reply for packet {reply._packet_id}')
+                                    logger.warning(f'Timeout waiting for reply for packet {reply.packet_id}')
                                     with connection._awaiting_replies_lock:
                                         connection._awaiting_replies.remove(reply)
                                 else:
@@ -262,8 +262,11 @@ class JEConnectionState:
         self.cipher_pair = None
 
         # ユーザー情報
+        self.userinfo_lock = threading.Lock()
         self.username = None
         self.uuid = None
+        self.session = {'uuid': None, 'public_key': None, 'signature': None, 'expiration': None}
+        self.keep_alive_id = None
 
     def _switch_state(self, new_state: JEPacketConnectionState):
         with self._state_lock:

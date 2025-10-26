@@ -5,47 +5,27 @@ import zlib
 
 import nbtlib
 
-from core import WORLD_PATH
 from core.logger import logger
-from core.level.enum import HeightmapType
+from core import WORLD_PATH
+from core.level.chunk import Chunk
 
 class Level:
     def __init__(self, name: str = 'world'):
         self.name = name
         self.world_height = 256
+    
 
-class Chunk:
-    def __init__(self, x: int, z: int):
-        self.x = x
-        self.z = z
-        self.chunk_data: nbtlib.File = None
-    
-    def tick(self):
-        # チャンクのtick処理
-        pass
-
-    def heightmaps(self) -> dict[HeightmapType, list[int]]:
-        heightmaps = {}
-        if self.chunk_data and 'Heightmaps' in self.chunk_data:
-            heightmaps_nbt = self.chunk_data['Heightmaps']
-            for heightmap_type in heightmaps_nbt:
-                heightmaps[HeightmapType[heightmap_type]] = [int(long_nbt) for long_nbt in heightmaps_nbt[heightmap_type]]
-        return heightmaps
-    
-    def sections(self) -> list:
-        pass
-    
 class Region:
     def __init__(self, region_x: int, region_z: int):
         self.region_x = region_x
         self.region_z = region_z
-        self.chunks = []
+        self.chunks: list[Chunk] = []
+        self._region_path = f'{WORLD_PATH}/region/r.{self.region_x}.{self.region_z}.mca'
 
-    def read(self):
-        region_path = f'{WORLD_PATH}/region/r.{self.region_x}.{self.region_z}.mca'
-        if not os.path.exists(region_path):
+    async def read(self):
+        if not os.path.exists(self._region_path):
             return Region(self.region_x, self.region_z)
-        with open(region_path, 'rb') as file:
+        with open(self._region_path, 'rb') as file:
             data = file.read()
         if len(data) < 0x2000:
             return Region(self.region_x, self.region_z)
@@ -60,7 +40,6 @@ class Region:
                 chunk_offset, sector_count = int.from_bytes(chunk_locations[offset:offset + 3], 'big'), chunk_locations[offset + 3]
                 timestamp = int.from_bytes(timestamps[offset:offset + 4], 'big')
                 chunk_x, chunk_z = base_chunk_x + region_chunk_x, base_chunk_z + region_chunk_z
-                chunk = Chunk(chunk_x, chunk_z)
                 if chunk_offset != 0 and sector_count != 0:
                     # read chunk data here
                     chunk_data_offset, chunk_data_legnth = chunk_offset * 0x1000, sector_count * 0x1000
@@ -71,8 +50,8 @@ class Region:
                     # TODO: Handle different compression types (https://minecraft.wiki/w/Region_file_format)
                     if compression_type == b'\x02': # Zlib
                         chunk_data = zlib.decompress(chunk_data)
-                    chunk.chunk_data = None if len(chunk_data) == 1 else nbtlib.File.parse(io.BytesIO(chunk_data))
-                self.chunks.append(chunk)
+                    chunk_nbt = None if len(chunk_data) == 1 else nbtlib.File.parse(io.BytesIO(chunk_data))
+                    self.chunks.append(Chunk.from_nbt(chunk_nbt) if chunk_nbt else None)
 
     def write(self):
         pass

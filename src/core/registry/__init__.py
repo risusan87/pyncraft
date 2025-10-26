@@ -6,22 +6,41 @@ from nbtlib import tag
 
 from core.logger import logger
 
-block_state_ids = {}
+CORE_REGISTRY: '_PyncraftRegistry' = None
 
-def register_block_states():
+def _register_block_states():
     '''
 	Registers block states from a JSON file to the block_state_ids dictionary.
 	Mapping information is provided by notchian server jar's Data Generator:
     https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Data_Generators
 	'''
-    global block_state_ids
+    block_state_ids = {}
     logger.info('Registering block states...')
     with open('src/core/registry/data/blocks.json', 'r') as f:
         ids = json.load(f)
     for block_state in ids:
         block_state_ids[block_state] = ids[block_state]
     logger.info(f'Registered {len(block_state_ids)} block states')
+    return block_state_ids
 
+def register_core():
+    global CORE_REGISTRY
+    if CORE_REGISTRY is None:
+        CORE_REGISTRY = _PyncraftRegistry()
+    else:
+        logger.warning('Core registry is already registered, skipping...')
+
+class _PyncraftRegistry:
+    '''
+    Pyncraft registry is a global registry for Pyncraft.
+    It is used to register data packs and other resources.
+    '''
+    def __init__(self):
+        core_registry = DataPackRegistry('src/core/registry/data/core', 'minecraft')
+        core_registry.register_all()
+        self.core = core_registry.registry_data
+        self.block_ids = _register_block_states()
+    
 class DataPackRegistry:
     '''
     Modern way to register Minecraft data.
@@ -59,7 +78,6 @@ class DataPackRegistry:
                     else:
                         raise ValueError(f'Unsupported type: {type(value)}')
                 self.registry_data[registry_id] = {self._registry_name + ':' + k: _parse_json(v) for k, v in data.items()}
-                logger.debug(f'self.registry_data[{registry_id}] = {self.registry_data[registry_id]}')
                 logger.info(f'Registered {len(self.registry_data[registry_id])} entries in {registry_id}')
 
 

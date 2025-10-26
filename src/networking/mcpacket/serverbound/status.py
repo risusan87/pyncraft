@@ -14,15 +14,15 @@ class SStatusRequest(ServerboundPacket):
         # S -> C: Statusリスポンス (サーバーの状態をJSON形式で返す)
 
         # 将来的にはcon_stateからサーバーの状態を取得する
-        mc_version = 'Pythonでマイクラサーバー書き直してみるよ' # protocol versionがマッチしない場合に表示
+        mc_version = 'Literally Any Version' # protocol versionがマッチしない場合に表示
         protocol_version = 772 # クライアントのバージョンと照合するのに使用
         max_players = con_state.max_players # 最大同時接続可能人数
         online_players = con_state.online_players # 現在オンラインの人数
         # オンライン人数にホバーした時に表示するオンラインプレイヤー情報
         sample_players = [
-            {'name':'ダミープレイヤー１','id':'2de4870c-deb6-42b2-8f34-36f9d2496142'},
-            {'name':'ダミープレイヤー２','id':'2de4870c-deb6-42b2-8f34-36f9d2496142'},
-             {'name':'ダミープレイヤー３','id':'2de4870c-deb6-42b2-8f34-36f9d2496142'}
+            {'name':'Gayg','id':'2de4870c-deb6-42b2-8f34-36f9d2496142'},
+            {'name':'Gayg Jr.','id':'2de4870c-deb6-42b2-8f34-36f9d2496142'},
+             {'name':'Daddy Gayg','id':'2de4870c-deb6-42b2-8f34-36f9d2496142'}
         ] 
         description = con_state.motd
 

@@ -4,7 +4,7 @@ import zlib
 import struct
 import uuid 
 
-from networking.mcpacket import jepacket_class_registry
+from networking.mcpacket import JESERVERBOUND_PACKETS
 
 class Buffer:
     def __init__(self, buffer: bytes | bytearray = None, read_only: bool = False):
@@ -248,6 +248,24 @@ class JEPacketBuffer(Buffer):
             raise TypeError('Value must be a UUID instance.')
         self.write(uuid_value.bytes if byte_order == 'big' else uuid_value.bytes_le)
 
+    def read_position(self, byte_order='big') -> tuple[int, int, int]:
+        # x as a 26-bit integer, followed by z as a 26-bit integer, followed by y as a 12-bit integer (all signed, two's complement)
+        packed_position = self.read_int64()
+        x = (packed_position >> 38) & 0x3FFFFFF
+        z = (packed_position >> 12) & 0x3FFFFFF
+        y = packed_position & 0xFFF
+        return (x, y, z)
+    
+    def write_position(self, position: tuple[int, int, int], byte_order='big'):
+        # x as a 26-bit integer, followed by z as a 26-bit integer, followed by y as a 12-bit integer (all signed, two's complement)
+        if not isinstance(position, tuple) or len(position) != 3:
+            raise TypeError('Position must be a tuple of (x, y, z).')
+        x, y, z = position
+        if x < -0x2000000 or x >= 0x2000000 or z < -0x2000000 or z >= 0x2000000 or y < -2048 or y >= 2048:
+            raise ValueError('Position values are out of bounds.')
+        packed_position = (x & 0x3FFFFFF) << 38 | (z & 0x3FFFFFF) << 12 | (y & 0xFFF)
+        self.write_int64(packed_position)
+
 class PacketWrapper(ABC):
     def __init__(self, client_socket, byte_order='big'):
         self._client_socket = client_socket
@@ -336,10 +354,10 @@ class JEPacketWrapper(PacketWrapper):
                 # 解凍されたデータをパケットバッファとして再構築
                 packet_buffer = JEPacketBuffer(uncompressed_data, read_only=True)
         packet_id = packet_buffer.read_varint() # パケットIDを取得
-        ServerboundPacket = jepacket_class_registry.get((con_state.get_state(), packet_id)) # 接続ステート+パケットIDを参照にパケットクラスを取得
+        ServerboundPacket = JESERVERBOUND_PACKETS.get((con_state.get_state(), packet_id)) # 接続ステート+パケットIDを参照にパケットクラスを取得
         if not ServerboundPacket:
             # サーバーが無効なパケットを受信した場合はプロトコルエラー
-            raise ValueError(f'Invalid packet: {(con_state.get_state(), packet_id)}')
+            raise ValueError(f'Invalid packet: {(con_state.get_state(), hex(packet_id))}')
         return ServerboundPacket.from_bytes(packet_buffer) # パケットクラスのインスタンスを生成して返却
 
     def write_packet(self, client_bound_packet, con_state):

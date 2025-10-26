@@ -71,7 +71,6 @@ class CRegistryData(ClientboundPacket):
             if value is not None:
                 data = io.BytesIO()
                 value.write(data)
-                logger.debug(f'Sending: {data.getvalue().hex()}')
                 packet_buffer.write_uint8(0x0a)
                 packet_buffer.write(data.getvalue())
         return packet_buffer

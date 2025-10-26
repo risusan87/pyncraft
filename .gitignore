@@ -1,7 +1,13 @@
+# python stuff
 .pytest_cache/
 .venv/
 __pycache__/
+*.egg-info/
+
+# resources
 assets/
 resources/
-pyncraft_server.*/
 notchian/
+
+# useless stuff that just love to show up out of nowhere
+.DS_Store

@@ -1,10 +1,11 @@
 
 from abc import ABC, abstractmethod
 import threading
+import typing
 
 from networking.enum import JEPacketConnectionState
 
-jepacket_class_registry = {}
+JESERVERBOUND_PACKETS = {}
 
 class Packet(ABC):
     @property
@@ -19,7 +20,7 @@ class ServerboundPacket(Packet):
         # サーバー行きパケットIDをクラスレジストリへ登録するデコレータ
         # ステート+IDでユニークなパケットを識別するために使用
         def wrapper(cls):
-            jepacket_class_registry[(state, packet_id)] = cls
+            JESERVERBOUND_PACKETS[(state, packet_id)] = cls
             cls._packet_id = packet_id
             cls._state = state
             return cls
@@ -38,7 +39,7 @@ class ServerboundPacket(Packet):
 class ClientboundPacket(Packet):
     # クライアント行きパケットを返信可能にするデコレータ
     @classmethod
-    def repliable(*repliable_packet_types):
+    def repliable(*repliable_packet_types: typing.Type[ServerboundPacket]):
         def wrapper(cls):
             cls._repliable_packets = repliable_packet_types # 返信待ちをするパケットのクラス
             cls._reply_arrived_flag = threading.Event() # 返信が来たかどうかのフラグ
@@ -54,6 +55,6 @@ class ClientboundPacket(Packet):
             return cls
         return wrapper
     # サーバーからクライアントへ送信されるパケットの基底クラス
-    def to_bytes(self, con_state): # -> PacketBuffer:
+    def to_bytes(self, con_state):
         # パケットをバイト列に変換
         pass

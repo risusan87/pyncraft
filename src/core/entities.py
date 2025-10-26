@@ -1,4 +1,6 @@
 
+entity_id = 0
+
 class Entity:
     pass
 
@@ -16,5 +18,3 @@ class Player(LivingEntity):
         super().__init__()
         self.username = username
         self.uuid = uuid
-        self.inventory = []
-        self.health = 20
