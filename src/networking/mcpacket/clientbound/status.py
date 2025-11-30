@@ -6,7 +6,6 @@ from networking.mcpacket.io import JEPacketBuffer
 
 class CStatusResponse(ClientboundPacket):
     def __init__(self, server_version: str, protocol_version: int, max_players: int, online_players: int, sample_players: list, description: str):
-        # サーバーの状態をJSON形式で保持
         self.json_data = {
             'version': {
                 'name': server_version,
@@ -28,7 +27,6 @@ class CStatusResponse(ClientboundPacket):
     
     def to_bytes(self, con_state):
         packet_buffer = JEPacketBuffer()
-        # JSONデータをUTF-8文字列として書き込む
         packet_buffer.write_utf8_string(json.dumps(self.json_data), 32767)
         return packet_buffer
 

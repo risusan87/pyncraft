@@ -5,7 +5,15 @@ from networking.enum import JEPacketConnectionState
 
 @ServerboundPacket.register_packet(JEPacketConnectionState.CONFIGURATION, 0x00)
 class SClientInformation(ServerboundPacket):
-    def __init__(self, locale: str, view_distance: int, chat_mode: int, chat_colors: bool, displayed_skin_parts: int, main_hand: int):
+    def __init__(
+            self, 
+            locale: str, 
+            view_distance: int, 
+            chat_mode: int, 
+            chat_colors: bool, 
+            displayed_skin_parts: int, 
+            main_hand: int
+        ):
         self.locale = locale
         self.view_distance = view_distance
         self.chat_mode = chat_mode
@@ -18,7 +26,6 @@ class SClientInformation(ServerboundPacket):
         return self._packet_id
     
     def handle(self, con_state):
-        # クライアント情報を受け取った際の処理
         with con_state.config_lock:
             con_state.client_info = self
         return None
@@ -45,7 +52,6 @@ class SPluginMessage(ServerboundPacket):
         return self._packet_id
     
     def handle(self, con_state):
-        # クライアントからのプラグインメッセージを処理する
         with con_state.config_lock:
             con_state.plugin_message = self
         pass
@@ -66,7 +72,6 @@ class SFinishConfigurationAcknowledged(ServerboundPacket):
         return self._packet_id
 
     def handle(self, con_state):
-        # 設定完了の確認応答を処理する
         con_state._switch_state(JEPacketConnectionState.PLAY)
         return None
 

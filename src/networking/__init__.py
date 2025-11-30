@@ -1,6 +1,5 @@
 from networking.connection import ConnectionListener
 
-# シングルトンの定義
 _listener = None
 
 def get_listener():
@@ -12,10 +11,8 @@ def get_listener():
 def start_server(server_config):
     global _listener
     _listener = ConnectionListener(server_config)
-    # サーバーソケットを開く
     _listener.start_server()
 
 def stop_server():
     global _listener
-    # サーバーソケットを閉じる
     _listener.stop_server()

@@ -21,9 +21,8 @@ class SLoginStart(ServerboundPacket):
         return self._packet_id
     
     def handle(self, con_state) -> login.CEncryptionRequest:
-        # C -> S: LoginStart (ログイン開始)
-        # S -> C: LoginSuccess (ログイン成功)
-        # ここではログイン成功のレスポンスを返す
+        # C -> S: Login Start
+        # S -> C: LoginSuccess
         public_der = con_state.public_der
         con_state.username = self.username
         con_state.uuid = self.uuid
@@ -48,9 +47,8 @@ class SEncryptionResponse(ServerboundPacket):
         return self._packet_id
     
     def handle(self, con_state) -> login.CLoginSuccess | login.CDisconnect:
-        # C -> S: EncryptionResponse (暗号化応答)
-        # S -> C: LoginSuccess (ログイン成功)
-        # 通信の暗号化
+        # C -> S: Encryption Response
+        # S -> C: Login Success
         rsa_private, _ = con_state.rsa_pair
         server_id = con_state.server_id
         public_der = con_state.public_der
@@ -59,7 +57,7 @@ class SEncryptionResponse(ServerboundPacket):
             return login.CDisconnect("Encryption failed")
         shared_key = decrypt_rsa(self._shared_secret, rsa_private)
         con_state.cipher_pair = gen_ciphers(shared_key)
-        # クライアントログイン
+        # Client authentication
         hash = auth_hash(server_id, shared_key, public_der)
         params = {
             'username': con_state.username,
@@ -67,14 +65,14 @@ class SEncryptionResponse(ServerboundPacket):
         }
         response = requests.get('https://sessionserver.mojang.com/session/minecraft/hasJoined', params=params)
         if response.status_code != 200:
-            return login.CDisconnect("Authentication failed: Mojang API is down")
+            return login.CDisconnect(f"Authentication failed ({response.status_code}): Mojang API is down perhaps?")
         data = response.json()
         profile_id = uuid.UUID(data.get('id'))
         player_name = data.get('name')
         name = data.get('properties')[0].get('name')
         value = data.get('properties')[0].get('value')
         signature = data.get('properties')[0].get('signature')
-        logger.info(f'Player {player_name} with UUID {profile_id} has been authorized', False)
+        logger.info(f'Player {player_name} ({profile_id}) has been authorized', False)
         return login.CLoginSuccess(profile_id, player_name, name, value, signature)
 
     @classmethod
@@ -96,8 +94,7 @@ class SLoginAcknowledged(ServerboundPacket):
     
     def handle(self, con_state):
         # S -> C: LoginSuccess 
-        # C -> S: LoginAcknowledged (ログイン完了)
-        # 接続をCONFIGに変更
+        # C -> S: LoginAcknowledged
         con_state._switch_state(JEPacketConnectionState.CONFIGURATION)
         return None
     
