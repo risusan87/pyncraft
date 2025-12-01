@@ -1,0 +1,137 @@
+[
+    {
+        "protocol": "773",
+        "versions": ["1.21.10", "1.21.9"],
+        "structure_type": "delta_from:772",
+        "configuration": {
+            "client_bound": [
+                "INSERT AT show_dialog:code_of_conduct"
+            ]
+        }
+    },
+
+    {
+        "protocol": "772",
+        "versions": ["1.21.8", "1.21.7"],
+        "structure_type": "persistent",
+        "handshaking": {
+            "server_bound": ["intention"]
+        },
+        "configuration": {
+            "server_bound": [
+                "client_information",
+                "cookie_response",
+                "custom_payload",
+                "finish_configuration",
+                "keep_alive",
+                "pong",
+                "resource_pack",
+                "select_known_packs",
+                "accept_code_of_conduct"
+            ],
+            "client_bound": [
+                "cookie_request", 
+                "custom_payload", 
+                "disconnect",
+                "finish_configuration",
+                "keep_alive",
+                "ping",
+                "reset_chat",
+                "registry_data",
+                "resource_pack_pop",
+                "resource_pack_push",
+                "store_cookie",
+                "transfer",
+                "update_enabled_features",
+                "update_tags",
+                "select_known_packs",
+                "custom_report_details",
+                "server_links",
+                "clear_dialog",
+                "show_dialog"
+            ]
+        },
+        "status": {
+            "server_bound": [
+                "status_request",
+                "ping_request"
+            ],
+            "client_bound": [
+                "status_response",
+                "ping_response"
+            ]
+        },
+        "login": {
+            "server_bound": [
+                "hello",
+                "key",
+                "custom_query_answer",
+                "login_acknowledged",
+                "cookie_response"
+            ],
+            "client_bound": [
+                "login_disconnect",
+                "hello",
+                "login_finished",
+                "login_compression",
+                "custom_query",
+                "cookie_request"
+            ]
+        },
+        "play": {
+            "server_bound": [
+                "accept_teleportation",
+                "block_entity_tag_query",
+                "bundle_item_selected",
+                "change_difficulty",
+                "change_game_mode",
+                "chat_ack",
+                "chat_command",
+                "chat_command_signed",
+                "chat",
+                "chat_session_update",
+                "chunk_batch_received",
+                "client_command",
+                "client_tick_end",
+                "client_information",
+                "command_suggestion",
+                "configuration_acknowledged",
+                "container_button_click",
+                "container_click",
+                "container_close",
+                "container_slot_state_changed",
+                "cookie_response",
+                "custom_payload",
+                "debug_sample_subscription",
+                "edit_book",
+                "update_command_block",
+                "entity_tag_query",
+                "interact",
+                "jigsaw_generate",
+                "keep_alive",
+                "lock_difficulty",
+                "move_player_pos",
+                "move_player_pos_rot",
+                "move_player_rot",
+                "move_player_status_only",
+                "move_vehicle",
+                "paddle_boat",
+                "pick_item_from_block",
+                "pick_item_from_entity",
+                "ping_request",
+                "place_recipe",
+                "player_abilities",
+                "player_action",
+                "player_command",
+                "player_input",
+                "player_loaded",
+                "pong",
+                "recipe_book_change_settings",
+                "recipe_book_seen_recipe",
+                
+            ],
+            "client_bound": [
+            ]
+        }
+    }
+]

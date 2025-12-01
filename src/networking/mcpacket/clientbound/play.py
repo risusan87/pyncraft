@@ -68,6 +68,11 @@ class CChunkDataAndUpdateLight(ClientboundPacket):
 
 
 class CLogin(ClientboundPacket):
+    """
+    773 -> 0x30
+    772 -> 0x2B
+    https://minecraft.wiki/w/Java_Edition_protocol/Packets#Login_(play)
+    """
     def __init__(self, 
         entity_id: int, 
         is_hardcore: bool, 
@@ -117,7 +122,7 @@ class CLogin(ClientboundPacket):
     
     @property
     def packet_id(self):
-        return 0x2B
+        return 0x2b
     
     def to_bytes(self, con_state):
         packet_buffer = JEPacketBuffer()

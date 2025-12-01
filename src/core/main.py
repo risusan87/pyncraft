@@ -3,7 +3,7 @@ import networking
 from core.logger import logger
 from core.pyncraftserver import PyncraftServer
 
-_version = '0.5'
+_version = '0.6'
 pynctaft_server = None
 
 def start_server():

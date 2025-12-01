@@ -10,7 +10,10 @@ JESERVERBOUND_PACKETS = {}
 class Packet(ABC):
     @property
     @abstractmethod
-    def packet_id(self):
+    def packet_id(self) -> str:
+        """
+        SINCE v0.6: this now indicates string namespace IDs (NOT NUMERICAL IDs). Refer to "resource" namespace instead of numerical ones.
+        """
         pass
 
 class ServerboundPacket(Packet):
@@ -18,7 +21,7 @@ class ServerboundPacket(Packet):
     Base class for CLIENT initiated packets, bound to SERVER.
     """
     @staticmethod
-    def register_packet(state: JEPacketConnectionState, packet_id: int):
+    def register_packet(state: JEPacketConnectionState, packet_id: str):
         def wrapper(cls):
             JESERVERBOUND_PACKETS[(state, packet_id)] = cls
             cls._packet_id = packet_id

@@ -2,7 +2,7 @@
 from networking.mcpacket import ServerboundPacket
 from networking.enum import JEPacketConnectionState
 
-@ServerboundPacket.register_packet(JEPacketConnectionState.HANDSHAKING, 0x00)
+@ServerboundPacket.register_packet(JEPacketConnectionState.HANDSHAKING, 'intention')
 class SHandshakePacket(ServerboundPacket):
     """
     https://minecraft.wiki/w/Java_Edition_protocol/Packets#Handshake
@@ -14,7 +14,7 @@ class SHandshakePacket(ServerboundPacket):
         self.intent = intent
 
     @property
-    def packet_id(self):
+    def packet_id(self) -> str:
         return self._packet_id
 
     def handle(self, con_state):

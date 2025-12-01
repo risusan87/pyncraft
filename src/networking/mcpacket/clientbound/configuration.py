@@ -16,8 +16,8 @@ class CDisconnect(ClientboundPacket):
         self.reason = reason
 
     @property
-    def packet_id(self):
-        return 0x02
+    def packet_id(self) -> str:
+        return 'disconnect'
     
     def to_bytes(self, con_state):
         con_state.state = JEPacketConnectionState.CLOSED
@@ -36,8 +36,8 @@ class CFinishConfiguration(ClientboundPacket):
         pass
 
     @property
-    def packet_id(self):
-        return 0x03
+    def packet_id(self) -> str:
+        return 'finish_configuration'
     
     def to_bytes(self, con_state):
         packet_buffer = JEPacketBuffer()
@@ -54,8 +54,8 @@ class CRegistryData(ClientboundPacket):
         self.registry_data = entry
 
     @property
-    def packet_id(self):
-        return 0x07
+    def packet_id(self) -> str:
+        return 'registry_data'
 
     def to_bytes(self, con_state):
         packet_buffer = JEPacketBuffer()
