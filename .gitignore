@@ -7,7 +7,9 @@ __pycache__/
 # resources
 assets/
 resources/
-notchian/
+
+# og
+notchian/*
 
 # useless stuff that just love to show up out of nowhere
 .DS_Store
